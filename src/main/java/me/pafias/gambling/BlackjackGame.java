@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class BlackjackGame {
 
     public enum GameResult {
-        PLAYER_WINS, DEALER_WINS, PUSH, PLAYER_BLACKJACK
+        PLAYER_WINS, DEALER_WINS, PUSH, PLAYER_BLACKJACK, FORFEIT
     }
 
     private final List<Card> playerHand = new ArrayList<>();

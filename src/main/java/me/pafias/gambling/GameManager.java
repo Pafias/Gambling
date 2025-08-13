@@ -44,23 +44,23 @@ public class GameManager {
                         .build())
                 .type(DialogType.multiAction(List.of(
                         ActionButton.builder(CC.a("&a$10"))
-                                .tooltip(CC.a("&7Click to bet $10"))
+                                .tooltip(CC.a("&7&oClick to bet $10"))
                                 .action(DialogAction.staticAction(ClickEvent.callback(audience -> startGame(10))))
                                 .build(),
                         ActionButton.builder(CC.a("&e$50"))
-                                .tooltip(CC.a("&7Click to bet $50"))
+                                .tooltip(CC.a("&7&oClick to bet $50"))
                                 .action(DialogAction.staticAction(ClickEvent.callback(audience -> startGame(50))))
                                 .build(),
                         ActionButton.builder(CC.a("&6$100"))
-                                .tooltip(CC.a("&7Click to bet $100"))
+                                .tooltip(CC.a("&7&oClick to bet $100"))
                                 .action(DialogAction.staticAction(ClickEvent.callback(audience -> startGame(100))))
                                 .build(),
                         ActionButton.builder(CC.a("&c$500"))
-                                .tooltip(CC.a("&7Click to bet $500"))
+                                .tooltip(CC.a("&7&oClick to bet $500"))
                                 .action(DialogAction.staticAction(ClickEvent.callback(audience -> startGame(500))))
                                 .build(),
                         ActionButton.builder(CC.a("&7Close"))
-                                .tooltip(CC.a("&7Click to chicken out"))
+                                .tooltip(CC.a("&7&oClick to chicken out"))
                                 .action(DialogAction.staticAction(ClickEvent.callback(Audience::closeDialog)))
                                 .build()
                 )).build())));
@@ -113,12 +113,16 @@ public class GameManager {
                         .build())
                 .type(DialogType.multiAction(List.of(
                         ActionButton.builder(CC.a("&aHit"))
-                                .tooltip(CC.a("&7Click to Hit (get another card)"))
+                                .tooltip(CC.a("&7&oClick to Hit (get another card)"))
                                 .action(DialogAction.staticAction(ClickEvent.callback(audience -> handleHit(game))))
                                 .build(),
                         ActionButton.builder(CC.a("&cStand"))
-                                .tooltip(CC.a("&7Click to Stand (keep your current hand)"))
+                                .tooltip(CC.a("&7&oClick to Stand (keep your current hand)"))
                                 .action(DialogAction.staticAction(ClickEvent.callback(audience -> handleStand(game))))
+                                .build(),
+                        ActionButton.builder(CC.a("&7Forfeit"))
+                                .tooltip(CC.a("&7&oClick to forfeit your bet and end the game"))
+                                .action(DialogAction.staticAction(ClickEvent.callback(audience -> handleForfeit(game))))
                                 .build()
                 )).build()));
         player.showDialog(gameDialog);
@@ -142,6 +146,13 @@ public class GameManager {
     private void handleStand(BlackjackGame game) {
         BlackjackGame.GameResult result = game.dealerPlays();
         showResultDialog(game, result);
+    }
+
+    /**
+     * Handles the player choosing to forfeit the game.
+     */
+    private void handleForfeit(BlackjackGame game) {
+        showResultDialog(game, BlackjackGame.GameResult.FORFEIT);
     }
 
     /**
@@ -184,6 +195,11 @@ public class GameManager {
                         .appendNewline()
                         .append(CC.a("&7It's a tie. Bet returned."));
                 break;
+            case FORFEIT:
+                resultMessage = CC.a("&a&lFORFEIT!")
+                        .appendNewline()
+                        .append(CC.a("&7You forfeited and lost your bet of &c$" + bet));
+                break;
             default:
                 resultMessage = CC.a("&cAn error occurred.");
                 break;
@@ -205,11 +221,11 @@ public class GameManager {
                         .build())
                 .type(DialogType.multiAction(List.of(
                         ActionButton.builder(CC.a("&aPlay Again"))
-                                .tooltip(CC.a("&7Click if you wish to play again"))
+                                .tooltip(CC.a("&7&oClick if you wish to play again"))
                                 .action(DialogAction.staticAction(ClickEvent.callback(audience -> showBettingDialog())))
                                 .build(),
                         ActionButton.builder(CC.a("&7Close"))
-                                .tooltip(CC.a("&7Click to quit the game"))
+                                .tooltip(CC.a("&7&oClick to quit the game"))
                                 .action(DialogAction.staticAction(ClickEvent.callback(Audience::closeDialog)))
                                 .build()
                 )).build())));
