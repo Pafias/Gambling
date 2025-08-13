@@ -1,0 +1,16 @@
+name: Gambling
+version: ${project.version}
+main: me.pafias.gambling.Gambling
+api-version: '1.21'
+authors: [ Pafias ]
+description: Gambling
+softdepend: [ Vault ]
+commands:
+  blackjack:
+    description: Blackjack
+    usage: /blackjack
+    permission: gambling.blackjack
+permission:
+  gambling.blackjack:
+    description: Permission to use the blackjack command
+    default: true
